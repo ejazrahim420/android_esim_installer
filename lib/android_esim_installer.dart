@@ -1,5 +1,4 @@
 import 'android_esim_installer_platform_interface.dart';
-// lib/android_esim_installer.dart
 import 'package:flutter/services.dart';
 
 typedef EsimInstallCallback = void Function(String status);
@@ -16,24 +15,33 @@ class AndroidEsimInstaller {
   ///   - "resolving"
   ///   - "error:...."
   ///
-  /// You can provide an optional [onStatus] callback to receive these updates.
+
   static Future<void> install({
     required String activationCode,
-    required String lpaDeclaredPermission,
-    required EsimInstallCallback onStatus,
+    required String appPackageName,
+    required EsimInstallCallback onInstalling,
+    required EsimInstallCallback onSuccess,
+    required EsimInstallCallback onResolving,
+    required EsimInstallCallback onError,
   }) async {
-    // optional status callback from native -> Dart
     _channel.setMethodCallHandler((call) async {
       if (call.method == 'esim_install_status') {
-        final msg = (call.arguments ?? '').toString();
-        onStatus(msg);
+        final String msg = (call.arguments ?? '').toString();
+        if (msg.trim().toLowerCase() == "installing") {
+          onInstalling(msg);
+        } else if (msg.trim().toLowerCase() == "resolving") {
+          onResolving(msg);
+        } else if (msg.trim().toLowerCase() == "success") {
+          onSuccess(msg);
+        } else {
+          onError(msg);
+        }
       }
     });
 
     await _channel.invokeMethod<void>('installEsim', {
       'activationCode': activationCode,
-      'lpaDeclaredPermission':
-          "$lpaDeclaredPermission.lpa.permission.BROADCAST",
+      'lpaDeclaredPermission': "$appPackageName.lpa.permission.BROADCAST",
     });
   }
 

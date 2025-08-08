@@ -96,7 +96,7 @@ Add to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  android_esim_installer: ^1.0.0
+  android_esim_installer: ^1.0.1
 ```
 
 Run:
@@ -116,9 +116,18 @@ import 'package:android_esim_installer/android_esim_installer.dart';
 
 await AndroidEsimInstaller.install(
   activationCode: 'LPA:1$YOUR_SMDP_PLUS_ADDRESS$YOUR_MATCHING_ID',
-  lpaDeclaredPermission: 'com.your_package_name.lpa.permission.BROADCAST',
-  onStatus: (status) {
-    print('Status: $status');
+  appPackageName: 'com.your_package_name',
+  onInstalling: (EsimInstallCallback message) {
+
+  },
+  onResolving: (EsimInstallCallback message) {
+    
+  }, 
+  onSuccess: (EsimInstallCallback message) {
+    
+  },
+  onError: (EsimInstallCallback message) {
+    
   },
 );
 ```

@@ -10,3 +10,8 @@
   - AndroidManifest changes (custom LPA broadcast permission + protected WRITE_EMBEDDED_SUBSCRIPTIONS permission).
   - Gradle `minSdkVersion` 28+.
   - App must be a **system app** or have **carrier privileges** to install
+
+## 1.0.1
+
+- Initial release of `android_esim_installer`.
+

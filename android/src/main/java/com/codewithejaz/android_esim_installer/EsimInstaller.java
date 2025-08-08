@@ -59,7 +59,7 @@ public class EsimInstaller {
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (!ACTION_DOWNLOAD_SUBSCRIPTION.equals(intent.getAction())) {
-                    channel.invokeMethod("esim_install_status", "error:");
+                    channel.invokeMethod("esim_install_status", "error: esim not supported");
                     return;
                 }
 
