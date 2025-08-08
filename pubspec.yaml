@@ -1,5 +1,5 @@
 name: android_esim_installer
-description: "A new Flutter plugin project."
+description: "A Flutter plugin (Android-only, Java) to install eSIM profiles programmatically using `EuiccManager`."
 version: 1.0.0
 homepage: https://github.com/ejazrahim420
 repository: https://github.com/ejazrahim420/android_esim_installer
