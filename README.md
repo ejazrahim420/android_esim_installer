@@ -1,6 +1,6 @@
 # android_esim_installer
 
-A Flutter plugin (Android-only, Java) to install eSIM profiles programmatically using `EuiccManager`.
+A Flutter plugin (Android-only) to install eSIM profiles programmatically using `EuiccManager`.
 
 ---
 
@@ -8,7 +8,34 @@ A Flutter plugin (Android-only, Java) to install eSIM profiles programmatically 
 
 This plugin **will not work** without the following setup in your app.
 
-### 1. AndroidManifest.xml changes
+### 1. Privileged Permission Warning
+
+⚠️ To use this plugin, you must **sign your eSIMs** from the eUICC/carrier with your package name or SHA-1 keys.
+
+The permission:
+
+```
+android.permission.WRITE_EMBEDDED_SUBSCRIPTIONS
+```
+
+is **signature/privileged**.
+Your app will **not** be allowed to install eSIMs unless:
+
+* It is a **system/privileged app** signed with the platform key, **or**
+* It has **carrier privileges** granted by the eUICC/carrier.
+
+
+If you do not meet these conditions, the plugin will return:
+
+```
+error:PERMISSION_DENIED
+```
+
+and installation will not proceed.
+
+---
+
+### 2. AndroidManifest.xml changes
 In your app’s `android/app/src/main/AndroidManifest.xml`:
 
 - Add the `tools` namespace to the `<manifest>` tag if not already present:
@@ -65,30 +92,6 @@ android {
 
 ---
 
-### 3. Privileged Permission Warning
-
-The permission:
-
-```
-android.permission.WRITE_EMBEDDED_SUBSCRIPTIONS
-```
-
-is **signature/privileged**.
-Your app will **not** be allowed to install eSIMs unless:
-
-* It is a **system/privileged app** signed with the platform key, **or**
-* It has **carrier privileges** granted by the eUICC/carrier.
-* To use this plugin, you must **sign your eSIMs** from the eUICC/carrier with your package name or SHA-1 keys.
-
-If you do not meet these conditions, the plugin will return:
-
-```
-error:PERMISSION_DENIED
-```
-
-and installation will not proceed.
-
----
 
 ## Installation
 
@@ -96,7 +99,7 @@ Add to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  android_esim_installer: ^1.0.1
+  android_esim_installer: ^1.0.2
 ```
 
 Run:
@@ -138,24 +141,9 @@ await AndroidEsimInstaller.install(
 
 The `onStatus` callback will receive:
 
-* `"installing"` → Download started
-* `"success"` → eSIM installed successfully
-* `"resolving"` → Requires user resolution
-* `"error:..."` → Installation failed with reason
-
----
-
-## Example Output
-
-```
-installing
-success
-```
-
-or
-
-```
-error:PERMISSION_DENIED , Your app does not have the required permissions for direct eSIM installation.
-```
+* `"onInstalling"` → Download started
+* `"onSuccess"` → eSIM installed successfully
+* `"onResolving"` → Requires user resolution
+* `"onError"` → Installation failed with reason
 
 ---

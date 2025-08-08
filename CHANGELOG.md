@@ -15,3 +15,7 @@
 
 - Initial release of `android_esim_installer`.
 
+## 1.0.2
+
+- Initial release of `android_esim_installer`.
+
